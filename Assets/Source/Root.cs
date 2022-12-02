@@ -20,25 +20,21 @@ public class Root : MonoBehaviour
 
     public void CharacterUpgrade()
     {
-        _characterUpgradeUI.Show(() =>
-        {
-            _saver.Save(Character);
-            Character.Health.TakeDamage(0);
-        });
+        _characterUpgradeUI.Show(() => Character.Health.TakeDamage(0));
     }
 
-    private void OnApplicationQuit()
+    private IEnumerable<Attribute> GetAllAttributes()
     {
-        _saver.Save(Character);
-    }
-
-    private IEnumerable<IAttributeProduct> GetAllAttributes()
-    {
-        var attributes = new List<IAttributeProduct>();
+        var attributes = new List<Attribute>();
         attributes.AddRange(Character.Attributes);
         foreach (IWeapon weapon in Character.Weapons)
             attributes.AddRange(weapon.Attributes);
 
         return attributes;
+    }
+
+    private void OnApplicationQuit()
+    {
+        _saver.Save(Character);
     }
 }

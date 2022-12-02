@@ -7,14 +7,14 @@ public class Armor : IHealth
     [SerializeField] private uint _value;
     [SerializeField] private IAttribute _maxValue;
     [SerializeField] private IHealth _health;
-    private readonly IHealthView _healthView;
+    private readonly IHealthView _view;
 
-    public Armor(uint value, IAttribute maxValue, IHealth health, IHealthView healthView)
+    public Armor(uint value, IAttribute maxValue, IHealth health, IHealthView view)
     {
         _value = value;
         _maxValue = maxValue ?? throw new ArgumentNullException(nameof(maxValue));
         _health = health ?? throw new ArgumentNullException(nameof(health));
-        _healthView = healthView ?? throw new ArgumentNullException(nameof(healthView));
+        _view = view ?? throw new ArgumentNullException(nameof(view));
     }
 
     public uint Value => _health.Value;
@@ -26,6 +26,6 @@ public class Armor : IHealth
         uint armorDamage = (uint)Mathf.Clamp((int)value, 0, _value);
         _value -= armorDamage;
         _health.TakeDamage(value - armorDamage);
-        _healthView.Show(_value, (uint)_maxValue.Value);
+        _view.Show(_value, (uint)_maxValue.Value);
     }
 }

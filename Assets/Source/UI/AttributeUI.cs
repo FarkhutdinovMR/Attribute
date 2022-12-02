@@ -11,27 +11,27 @@ public class AttributeUI : MonoBehaviour
     [SerializeField] private TMP_Text _valueText;
     [SerializeField] private TMP_Text _costText;
 
-    private IAttributeProduct _product;
-    private Action<IAttributeProduct> _onBuyButtonClickedCallback;
+    private Attribute _attribute;
+    private Action<Attribute> _onBuyButtonClickedCallback;
 
-    public void Init(IAttributeProduct product, Action<IAttributeProduct> onBuyButtonClickedCallback)
+    public void Init(Attribute attribute, Action<Attribute> onBuyButtonClickedCallback)
     {
-        _product = product;
+        _attribute = attribute;
         _onBuyButtonClickedCallback = onBuyButtonClickedCallback;
     }
 
     public void Show()
     {
-        string attributeType = _product.Attribute.Type.ToString();
+        string attributeType = _attribute.Type.ToString();
         _iconImage.sprite = IconLibrary.GetIcon(attributeType);
         _nameText.SetText(attributeType);
-        _levelText.SetText($"Lv. {_product.Attribute.Level.Value} / {_product.Attribute.Level.MaxValue}");
-        _valueText.SetText(_product.Attribute.Value.ToString());
-        _costText.SetText(_product.Attribute.Level.Value != _product.Attribute.Level.MaxValue ? _product.Cost.ToString() : "MaxLv");
+        _levelText.SetText($"Lv. {_attribute.Level.Value} / {_attribute.Level.MaxValue}");
+        _valueText.SetText(_attribute.Value.ToString());
+        _costText.SetText(_attribute.Level.Value != _attribute.Level.MaxValue ? _attribute.Cost.ToString() : "MaxLv");
     }
 
     public void OnBuyButtonClick()
     {
-        _onBuyButtonClickedCallback?.Invoke(_product);
+        _onBuyButtonClickedCallback?.Invoke(_attribute);
     }
 }

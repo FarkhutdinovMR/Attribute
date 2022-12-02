@@ -9,12 +9,12 @@ public class CharacterUpgradeUI : MonoBehaviour
     [SerializeField] private MonoBehaviour _walletViewSource;
     private IWalletView _walletView => (IWalletView)_walletViewSource;
 
-    private IEnumerable<IAttributeProduct> _products;
+    private IEnumerable<Attribute> _products;
     private Action _onSuccessUpgradedCallback;
     private List<AttributeUI> _attributeUIs;
     private IWallet _wallet;
 
-    public void Init(IEnumerable<IAttributeProduct> products, IWallet wallet)
+    public void Init(IEnumerable<Attribute> products, IWallet wallet)
     {
         _products = products ?? throw new ArgumentNullException(nameof(products));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
@@ -33,16 +33,16 @@ public class CharacterUpgradeUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void Upgrade(IAttributeProduct product)
+    private void Upgrade(Attribute attribute)
     {
-        if (_wallet.Money < product.Cost)
+        if (_wallet.Money < attribute.Cost)
             return;
 
-        if (product.Attribute.Level.Value >= product.Attribute.Level.MaxValue)
+        if (attribute.Level.Value >= attribute.Level.MaxValue)
             return;
 
-        _wallet.Spend(product.Cost);
-        product.Buy();
+        _wallet.Spend(attribute.Cost);
+        attribute.Upgrade();
         Render();
         _onSuccessUpgradedCallback?.Invoke();
     }
@@ -54,7 +54,7 @@ public class CharacterUpgradeUI : MonoBehaviour
         if (_attributeUIs.Count > 0)
             Clear();
 
-        foreach (IAttributeProduct product in _products)
+        foreach (Attribute product in _products)
         {
             AttributeUI newAttributeUI = Instantiate(_attributeTemplate, _attributeContainer);
             newAttributeUI.Init(product, Upgrade);

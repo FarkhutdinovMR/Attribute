@@ -2,18 +2,23 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Attribute : IAttribute
+public abstract class Attribute : IAttribute
 {
     [field: SerializeField] public AttributeType Type { get; private set; }
-    [field: SerializeField] public uint BaseValue { get; private set; }
-    [field: SerializeReference] public ILevel Level { get; private set; }
 
-    public Attribute(AttributeType type, uint baseValue, ILevel level)
+    protected Attribute(AttributeType type)
     {
         Type = type;
-        BaseValue = baseValue;
-        Level = level ?? throw new ArgumentNullException(nameof(level));
     }
 
-    public float Value => BaseValue * Level.Value;
+    public abstract ILevel Level { get; }
+    
+    public abstract uint Cost { get; }
+
+    public abstract float Value { get; }
+
+    public virtual void Upgrade()
+    {
+        Level.LevelUp();
+    }
 }

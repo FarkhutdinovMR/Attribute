@@ -2,75 +2,28 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class ProgressionAttribute : Product, IAttributeProduct
+public class ProgressionAttribute : Attribute
 {
-    [field: SerializeReference] public IAttribute Attribute { get; private set; }
+    [SerializeField] private uint _baseValue;
+    [SerializeField] private uint _cost;
+    [field: SerializeReference] private ILevel _level;
 
-    public ProgressionAttribute(uint cost, IAttribute attribute) : base(cost)
+    public ProgressionAttribute(AttributeType type, ILevel level, uint cost, uint baseValue) : base(type)
     {
-        Attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+        _baseValue = baseValue;
+        _cost = cost;
+        _level = level;
     }
 
-    public override void Buy()
+    public override float Value => _baseValue * Level.Value;
+
+    public override uint Cost => _cost;
+
+    public override ILevel Level => _level;
+
+    public override void Upgrade()
     {
-        base.Buy();
-        Attribute.Level.LevelUp();
-    }
-}
-
-public interface IAttributeProduct : IProduct
-{
-    IAttribute Attribute { get; }
-}
-
-[Serializable]
-public class FixedAttribute : ILevel, IAttribute, IAttributeProduct
-{
-    [field: SerializeField] public AttributeType Type { get; private set; }
-    [SerializeField] private CostValue[] _costValue;
-    [SerializeField] private uint _currentLevel;
-
-    public FixedAttribute(AttributeType type, CostValue[] costValue)
-    {
-        Type = type;
-        _costValue = costValue ?? throw new ArgumentNullException(nameof(costValue));
-    }
-
-    public uint Value => _currentLevel + 1;
-
-    public uint MaxValue => (uint)_costValue.Length;
-
-    public ILevel Level => this;
-
-    float IAttribute.Value => _costValue[_currentLevel].Value;
-
-    public IAttribute Attribute => this;
-
-    public uint Cost => _costValue[_currentLevel].Cost;
-
-    public void LevelUp()
-    {
-        if (_currentLevel + 1 >= MaxValue)
-            throw new InvalidOperationException();
-
-        _currentLevel++;
-    }
-
-    public void Buy()
-    {
-        LevelUp();
-    }
-}
-
-[Serializable]
-public class CostValue
-{
-    public uint Cost;
-    public float Value;
-
-    public CostValue(uint cost, float value)
-    {
-        Cost = cost;
-        Value = value;
+        base.Upgrade();
+        _cost += _cost;
     }
 }

@@ -11,13 +11,13 @@ public class PistolMB : MonoBehaviour, IWeapon
     private IAttribute _damage;
     private bool _canShoot;
 
-    public IAttributeProduct[] Attributes { get; private set; }
+    public Attribute[] Attributes { get; private set; }
 
-    public void Init(IAttributeProduct[] attributes)
+    public void Init(Attribute[] attributes)
     {
         Attributes = attributes;
-        _rateOfFire = Array.Find(Attributes, item => item.Attribute.Type == AttributeType.RateOfFire).Attribute;
-        _damage = Array.Find(Attributes, item => item.Attribute.Type == AttributeType.Damage).Attribute;
+        _rateOfFire = Array.Find(Attributes, item => item.Type == AttributeType.RateOfFire);
+        _damage = Array.Find(Attributes, item => item.Type == AttributeType.Damage);
         _canShoot = true;
     }
 

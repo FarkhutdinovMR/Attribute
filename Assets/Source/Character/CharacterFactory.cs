@@ -12,11 +12,10 @@ public class CharacterFactory : MonoBehaviour, ICharacterFactory
 
     [SerializeField] private WeaponFactory _weaponFactory;
 
-    private List<IAttributeProduct> _defaultAttributes = new()
+    private Attribute[] _defaultAttributes = new Attribute[]
     {
         new FixedAttribute(AttributeType.Health, new CostValue[] { new CostValue(1000, 150), new CostValue(2000, 200), new CostValue(4000, 250) }),
-        new ProgressionAttribute(3500, new Attribute(AttributeType.Armor, 50, new Level(1, 5))),
-        new ProgressionAttribute(3000, new Attribute(AttributeType.MoveSpeed, 4, new Level(1, 5)))
+        new FixedAttribute(AttributeType.Armor, new CostValue[] { new CostValue(2000, 50), new CostValue(3000, 75), new CostValue(4000, 100) })
     };
 
     public ICharacter Create(ICharacter character)
@@ -34,13 +33,13 @@ public class CharacterFactory : MonoBehaviour, ICharacterFactory
     private ICharacter Create()
     {
         IWeapon[] weapons = new IWeapon[] { _weaponFactory.Create<Pistol>() };
-        return new Character(CreateHealth(_defaultAttributes.ToArray()), _defaultAttributes.ToArray(), new Wallet(50000), weapons);
+        return new Character(CreateHealth(_defaultAttributes), _defaultAttributes, new Wallet(50000), weapons);
     }
 
-    private IHealth CreateHealth(IAttributeProduct[] attributes)
+    private IHealth CreateHealth(Attribute[] attributes)
     {
-        IAttribute health = Array.Find(attributes, item => item.Attribute.Type == AttributeType.Health).Attribute;
-        IAttribute armor = Array.Find(attributes, item => item.Attribute.Type == AttributeType.Armor).Attribute;
+        IAttribute health = Array.Find(attributes, item => item.Type == AttributeType.Health);
+        IAttribute armor = Array.Find(attributes, item => item.Type == AttributeType.Armor);
         return new Armor((uint)armor.Value, armor, new Health((uint)health.Value, health, _healthView), _armorView);
     }
 

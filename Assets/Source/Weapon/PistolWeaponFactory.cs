@@ -5,15 +5,13 @@ public class PistolWeaponFactory : MonoBehaviour, IWeaponFactory
     [SerializeField] private PistolMB _pistolTemplate;
     [SerializeField] private Transform _weaponContainer;
 
-    private IAttributeProduct[] _defaultAttributes = new ProgressionAttribute[]
+    private Attribute[] _defaultAttributes = new Attribute[]
     {
-        new ProgressionAttribute(5000, new Attribute(AttributeType.Damage, 20, new Level(1, 3))),
-        new ProgressionAttribute(2000, new Attribute(AttributeType.RateOfFire, 1, new Level(1, 4))),
-        new ProgressionAttribute(3500, new Attribute(AttributeType.ReloadSpeed, 3, new Level(1, 4))),
-        new ProgressionAttribute(3000, new Attribute(AttributeType.MagazineSize, 6, new Level(1, 3)))
+        new ProgressionAttribute(AttributeType.Damage, new Level(1, 3), 2000, 20),
+        new FixedAttribute(AttributeType.RateOfFire, new CostValue[] { new CostValue(2000, 1), new CostValue(3000, 0.5f), new CostValue(4000, 0.25f) }),
     };
 
-    public IWeapon Create(IAttributeProduct[] attributes)
+    public IWeapon Create(Attribute[] attributes)
     {
         if (attributes == null)
             attributes = _defaultAttributes;
@@ -22,9 +20,4 @@ public class PistolWeaponFactory : MonoBehaviour, IWeaponFactory
         newPistol.Init(attributes);
         return new Pistol(attributes, newPistol);
     }
-}
-
-public interface IWeaponFactory
-{
-    IWeapon Create(IAttributeProduct[] attributes);
 }

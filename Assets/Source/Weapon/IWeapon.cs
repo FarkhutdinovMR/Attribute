@@ -1,5 +1,5 @@
 public interface IWeapon
 {
-    IAttributeProduct[] Attributes { get; }
+    Attribute[] Attributes { get; }
     void Shoot();
 }
