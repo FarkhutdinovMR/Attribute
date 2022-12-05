@@ -6,7 +6,8 @@ public class Test : MonoBehaviour
 
     public void TakeDamage()
     {
-        _root.Character.Health.TakeDamage(20);
+        if (_root.Character.Health.IsAlive)
+            _root.Character.Health.TakeDamage(20);
     }
 
     public void Shoot()

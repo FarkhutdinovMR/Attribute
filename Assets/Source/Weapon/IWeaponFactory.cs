@@ -1,4 +1,4 @@
 ﻿public interface IWeaponFactory
 {
-    IWeapon Create(Attribute[] attributes);
+    Weapon Create(Attribute[] attributes);
 }

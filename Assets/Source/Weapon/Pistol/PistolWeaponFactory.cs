@@ -11,7 +11,7 @@ public class PistolWeaponFactory : MonoBehaviour, IWeaponFactory
         new FixedAttribute(AttributeType.RateOfFire, new CostValue[] { new CostValue(2000, 1), new CostValue(3000, 0.5f), new CostValue(4000, 0.25f) }),
     };
 
-    public IWeapon Create(Attribute[] attributes)
+    public Weapon Create(Attribute[] attributes)
     {
         if (attributes == null)
             attributes = _defaultAttributes;

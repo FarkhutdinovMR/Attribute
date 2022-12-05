@@ -4,7 +4,7 @@ using UnityEngine;
 public class Root : MonoBehaviour
 {
     [SerializeField] private CharacterFactory _characterFactory;
-    [SerializeField] private CharacterUpgradeUI _characterUpgradeUI;
+    [SerializeField] private AttributeUpgradeUI _characterUpgradeUI;
 
     private FileSave<ICharacter> _saver;
 
@@ -27,7 +27,7 @@ public class Root : MonoBehaviour
     {
         var attributes = new List<Attribute>();
         attributes.AddRange(Character.Attributes);
-        foreach (IWeapon weapon in Character.Weapons)
+        foreach (Weapon weapon in Character.Weapons)
             attributes.AddRange(weapon.Attributes);
 
         return attributes;

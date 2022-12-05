@@ -23,8 +23,8 @@ public class CharacterFactory : MonoBehaviour, ICharacterFactory
         if (character == null)
             return Create();
 
-        List<IWeapon> weapons = new();
-        foreach (IWeapon weapon in character.Weapons)
+        List<Weapon> weapons = new();
+        foreach (Weapon weapon in character.Weapons)
             weapons.Add(_weaponFactory.Create(weapon));
 
         return new Character(CreateHealth(character.Attributes), character.Attributes, character.Wallet, weapons.ToArray());
@@ -32,7 +32,7 @@ public class CharacterFactory : MonoBehaviour, ICharacterFactory
 
     private ICharacter Create()
     {
-        IWeapon[] weapons = new IWeapon[] { _weaponFactory.Create<Pistol>() };
+        IWeapon[] weapons = new IWeapon[] { _weaponFactory.Create<Turret>() };
         return new Character(CreateHealth(_defaultAttributes), _defaultAttributes, new Wallet(50000), weapons);
     }
 

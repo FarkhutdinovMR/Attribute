@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PistolMB : MonoBehaviour, IWeapon
+public abstract class WeaponMB : MonoBehaviour, IWeapon
 {
     [SerializeField] private Bullet _bullet;
     [SerializeField] private Transform _bulletTarget;
@@ -26,9 +26,15 @@ public class PistolMB : MonoBehaviour, IWeapon
         if (_canShoot == false)
             return;
 
+        CreateBullet();
+        StartCoroutine(WaitRollback());
+    }
+
+    protected virtual Bullet CreateBullet()
+    {
         Bullet newBullet = Instantiate(_bullet, _bulletTarget.position, Quaternion.identity);
         newBullet.Init((uint)_damage.Value);
-        StartCoroutine(WaitRollback());
+        return newBullet;
     }
 
     private IEnumerator WaitRollback()
